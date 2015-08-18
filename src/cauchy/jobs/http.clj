@@ -1,7 +1,5 @@
 (ns cauchy.jobs.http
-    (:require [clj-http.client :as http]
-              )
-  )
+    (:require [clj-http.client :as http]))
 
 (defn get-state-with-threshold
   "threshold comparator"
@@ -13,17 +11,13 @@
 
 (def default-code-threshold
   { "status-code" { :warn 400 :crit 500 :comp >}
-    "request-time" {:warn 1000 :crit 4000 :comp >}}
-  )
-
+    "request-time" {:warn 1000 :crit 4000 :comp >}})
 
 (defn get-http-data
  "retrieve url status"
   [{:keys [protocol host port path] :or {protocol "http" host "localhost" port "80" path "/"}}]
   (let [url (str protocol "://" host ":" port path)]
-    (http/get url {:throw-exceptions false})
-  )
-)
+    (http/get url {:throw-exceptions false})))
 
 (defn http-health
  "Main http checker"
@@ -37,5 +31,4 @@
         {:service "request-time"
          :state lstate
          :metric (:request-time resp)}]))
-  ([] (http-health{})
-  ))
+  ([] (http-health{})))

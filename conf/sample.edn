@@ -1,0 +1,15 @@
+{:jobs
+ {:haproxy {"http_check" {:interval 30
+                               :job-ns "cauchy.jobs.http"
+                               :job-fn "http-health"
+                               :args [{:protocol "https"
+                                       :host "your_host_goes_here"
+                                       :port "443"
+                                       :path "/status.json"
+                                       :thresholds { "status-code" {:warn 400 :crit 500}
+                                                     "request-time" {:warn 1000 :crit 4000}}
+                                        }
+                                ]
+                        }
+         }
+  }}
