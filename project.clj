@@ -1,4 +1,4 @@
-(defproject cauchy-jobs-http "0.1.0"
+(defproject cauchy-jobs-http "0.1.1"
   :description "HTTP Checker for cauchy"
   :url "https://github.com/luhhujbb/cauchy-jobs-http"
   :license {:name "Eclipse Public License"

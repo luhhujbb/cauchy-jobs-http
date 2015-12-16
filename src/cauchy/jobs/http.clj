@@ -9,6 +9,14 @@
    (comp metric warn) "warning"
    :else "ok"))
 
+ (defn get-metric-with-threshold
+   "threshold comparator"
+   [{:keys [warn crit comp] :as conf} metric]
+   (cond
+    (comp metric crit) -1
+    (comp metric warn) 0
+    :else 1))
+
 (def default-code-threshold
   { "status-code" { :warn 400 :crit 500 :comp >}
     "request-time" {:warn 1000 :crit 4000 :comp >}})
@@ -25,9 +33,11 @@
   (let [thresholds (merge-with merge default-code-threshold thresholds)
         resp (get-http-data conf)
         sstate (get-state-with-threshold (get thresholds "status-code") (:status resp))
-        lstate (get-state-with-threshold (get thresholds "request-time") (:request-time resp))]
+        lstate (get-state-with-threshold (get thresholds "request-time") (:request-time resp))
+        smetric (get-metric-with-threshold get thresholds "status-code") (:status resp))]
        [{:service "status"
-         :state sstate}
+         :state sstate
+         :metric smetric}
         {:service "request-time"
          :state lstate
          :metric (:request-time resp)}]))
